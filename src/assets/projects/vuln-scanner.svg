@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <defs>
+    <linearGradient id="g2" x1="0" x2="1">
+      <stop offset="0" stop-color="#06b6d4"/>
+      <stop offset="1" stop-color="#7c3aed"/>
+    </linearGradient>
+  </defs>
+  <rect width="100%" height="100%" fill="#04020a"/>
+  <rect x="30" y="30" width="740" height="390" rx="18" fill="url(#g2)" opacity="0.12"/>
+  <g fill="#fff" font-family="Poppins, sans-serif">
+    <text x="60" y="120" font-size="36" font-weight="700">Vulnerability Scanner</text>
+    <text x="60" y="170" font-size="18" fill="#c7fff6">Automated OWASP checks & reporting</text>
+    <rect x="60" y="210" width="320" height="8" rx="4" fill="#06b6d4" opacity="0.9"/>
+  </g>
+</svg>

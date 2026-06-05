@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <defs>
+    <linearGradient id="g" x1="0" x2="1">
+      <stop offset="0" stop-color="#7c3aed"/>
+      <stop offset="1" stop-color="#4f46e5"/>
+    </linearGradient>
+  </defs>
+  <rect width="100%" height="100%" fill="#060013"/>
+  <rect x="30" y="30" width="740" height="390" rx="18" fill="url(#g)" opacity="0.12"/>
+  <g fill="#fff" font-family="Poppins, sans-serif">
+    <text x="60" y="120" font-size="36" font-weight="700">CyberEdu Portal</text>
+    <text x="60" y="170" font-size="18" fill="#c7c7ff">Interactive cybersecurity learning platform</text>
+    <rect x="60" y="210" width="260" height="8" rx="4" fill="#a78bfa" opacity="0.9"/>
+  </g>
+</svg>

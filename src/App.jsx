@@ -1,77 +1,50 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import React, { useState } from 'react';
-import "./index.css";
-import Home from "./Pages/Home";
-import About from "./Pages/About";
-import AnimatedBackground from "./components/Background";
-import Navbar from "./components/Navbar";
-import Portofolio from "./Pages/Portofolio";
-import ContactPage from "./Pages/Contact";
-import ProjectDetails from "./components/ProjectDetail";
-import WelcomeScreen from "./Pages/WelcomeScreen";
-import { AnimatePresence } from 'framer-motion';
+import React, { useEffect, useState } from 'react'
+import { LazyMotion, domAnimation, m } from 'framer-motion'
+import Navbar from './components/Navbar'
+import Hero from './components/Hero'
+import About from './components/About'
+import Skills from './components/Skills'
+import Projects from './components/ProjectsAdvanced'
+import Certificates from './components/Certificates'
+// Services section removed
+import Contact from './components/Contact'
+import Footer from './components/Footer'
 
-const LandingPage = ({ showWelcome, setShowWelcome }) => {
+export default function App() {
+  const [theme, setTheme] = useState(() => {
+    try {
+      return localStorage.getItem('theme') || 'dark'
+    } catch (e) {
+      return 'dark'
+    }
+  })
+
+  useEffect(() => {
+    const root = document.documentElement
+    if (theme === 'dark') {
+      root.classList.add('dark')
+      root.classList.remove('light')
+    } else {
+      root.classList.add('light')
+      root.classList.remove('dark')
+    }
+    try { localStorage.setItem('theme', theme) } catch (e) { /* ignore */ }
+  }, [theme])
+
   return (
-    <>
-      <AnimatePresence mode="wait">
-        {showWelcome && (
-          <WelcomeScreen onLoadingComplete={() => setShowWelcome(false)} />
-        )}
-      </AnimatePresence>
-
-      {!showWelcome && (
-        <>
-          <Navbar />
-          <AnimatedBackground />
-          <Home />
+    <LazyMotion features={domAnimation}>
+      <m.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="min-h-screen" style={{ background: 'var(--bg)', color: 'var(--text)' }}>
+        <Navbar theme={theme} setTheme={setTheme} />
+        <main className="pt-20">
+          <Hero />
           <About />
-          <Portofolio />
-          <ContactPage />
-          <footer>
-            <center>
-              <hr className="my-3 border-gray-400 opacity-15 sm:mx-auto lg:my-6 text-center" />
-              <span className="block text-sm pb-4 text-gray-500 text-center dark:text-gray-400">
-                Copyright © 2025{" "} by Heer Patel.
-                All Rights Reserved.
-              </span>
-            </center>
-          </footer>
-        </>
-      )}
-    </>
-  );
-};
-
-const ProjectPageLayout = () => (
-  <>
-    <ProjectDetails />
-    <footer>
-      <center>
-        <hr className="my-3 border-gray-400 opacity-15 sm:mx-auto lg:my-6 text-center" />
-        <span className="block text-sm pb-4 text-gray-500 text-center dark:text-gray-400">
-          © 2023{" "}
-          <a href="https://heerprotfolio.netlify.app/" className="hover:underline">
-            Heer Patel™
-          </a>
-          . All Rights Reserved.
-        </span>
-      </center>
-    </footer>
-  </>
-);
-
-function App() {
-  const [showWelcome, setShowWelcome] = useState(true);
-
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<LandingPage showWelcome={showWelcome} setShowWelcome={setShowWelcome} />} />
-        <Route path="/project/:id" element={<ProjectPageLayout />} />
-      </Routes>
-    </BrowserRouter>
-  );
+          <Skills />
+          <Projects />
+          <Certificates />
+          <Contact />
+          <Footer />
+        </main>
+      </m.div>
+    </LazyMotion>
+  )
 }
-
-export default App;

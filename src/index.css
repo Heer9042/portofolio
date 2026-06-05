@@ -3,6 +3,44 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Touch-friendly buttons */
+button, a {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Mobile-first base styles */
+@media (max-width: 640px) {
+  body {
+    font-size: 14px;
+  }
+}
+
+/* Prevent zoom on input focus on iOS */
+input, textarea, select {
+  font-size: 16px;
+}
+
+/* Smooth transitions */
+* {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
+}
+
+html[class~="dark"] {
+  color-scheme: dark;
+}
+
+html[class~="light"] {
+  color-scheme: light;
+}
+
 * {
 	margin: 0;
 	padding: 0;
@@ -16,8 +54,125 @@
 html,
 body {
 	overflow-x: hidden;
-	background: #030014;
+		background: var(--bg);
 	scroll-behavior: smooth !important;
+}
+
+/* Smooth theme transition for background and text */
+html, body, :root {
+	transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+/* Theme CSS variables (class based) */
+:root {
+	--bg: #0a0f1a;
+	--primary: #00ff9d;
+	--secondary: #00b8ff;
+	--text: #e6edf3;
+	--card: rgba(255,255,255,0.03);
+
+	/* Additional design tokens */
+	--muted: #9fb4c8;
+	--secondary-text: #9fb4c8;
+	--border: rgba(255,255,255,0.06);
+	--shadow: none;
+	--hover-shadow: 0 0 20px rgba(0,255,157,0.12);
+	--glass-bg: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+	--backdrop-filter: blur(8px);
+	--neon-border-shadow: 0 6px 30px rgba(0,255,157,0.06), 0 0 40px rgba(0,184,255,0.03) inset;
+	--neon-border: 1px solid rgba(0,255,157,0.06);
+}
+
+html.light {
+	--bg: #f8fafc;
+	--primary: #00a67e;
+	--secondary: #00b8ff;
+	--text: #0f172a;
+	--card: #ffffff;
+
+	/* Light-mode tokens (clean SaaS look) */
+	--muted: #64748b;
+	--secondary-text: #475569;
+	--border: #e6eef8; /* close to tailwind slate-200 */
+	--shadow: 0 1px 2px rgba(15,23,42,0.04);
+	--hover-shadow: 0 8px 30px rgba(15,23,42,0.06);
+	--glass-bg: #ffffff; /* no heavy glass in light mode */
+	--backdrop-filter: none;
+	--neon-border-shadow: none;
+	--neon-border: 1px solid transparent;
+}
+
+html.dark {
+	--bg: #0a0f1a;
+	--primary: #00ff9d;
+	--secondary: #00b8ff;
+	--text: #e6edf3;
+	--card: rgba(255,255,255,0.03);
+}
+
+/* Glassmorphism utility */
+.glass {
+	background: var(--glass-bg);
+	border: var(--neon-border);
+	backdrop-filter: var(--backdrop-filter);
+}
+
+/* Light mode adjustments */
+html.light .glass {
+	background: linear-gradient(180deg, rgba(2,6,23,0.03), rgba(2,6,23,0.02));
+	border: 1px solid rgba(2,6,23,0.06);
+	backdrop-filter: blur(6px);
+}
+
+html.light .neon-border {
+	box-shadow: 0 6px 20px rgba(0,166,126,0.04), 0 0 20px rgba(0,184,255,0.02) inset;
+	border: 1px solid rgba(0,166,126,0.06);
+}
+
+/* Terminal styling for light mode */
+html.light .terminal {
+	color: var(--primary);
+}
+html.light .terminal::after {
+	background: var(--primary);
+}
+
+/* Neon border glow */
+.neon-border {
+	box-shadow: var(--neon-border-shadow);
+	border: var(--neon-border);
+}
+
+/* Design system helper utilities (use alongside Tailwind classes) */
+@layer components {
+	.bg-theme { background-color: var(--card); }
+	.text-theme { color: var(--text); }
+	.text-muted { color: var(--muted); }
+	.border-theme { border: 1px solid var(--border); }
+	.shadow-theme { box-shadow: var(--shadow); }
+	.hover-theme:hover { box-shadow: var(--hover-shadow); }
+	.glass-theme { background: var(--glass-bg); border: var(--neon-border); backdrop-filter: var(--backdrop-filter); }
+	.no-glow { box-shadow: none !important; }
+}
+
+/* Terminal / type effect cursor */
+.terminal {
+	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', monospace;
+	color: var(--primary);
+}
+.terminal::after {
+	content: '';
+	display: inline-block;
+	width: 10px;
+	height: 18px;
+	margin-left: 6px;
+	background: var(--primary);
+	opacity: 0.9;
+	animation: blink 1s steps(2, start) infinite;
+}
+
+@keyframes blink {
+	50% { opacity: 0; }
 }
 
 @keyframes blob {
@@ -50,7 +205,7 @@ body {
   }
   
   ::-webkit-scrollbar-track {
-	background: rgba(3, 0, 20, 0.4);
+		background: rgba(3, 0, 20, 0.4);
 	backdrop-filter: blur(8px);
 	-webkit-backdrop-filter: blur(8px);
 	border: 1px solid rgba(99, 102, 241, 0.1);
@@ -69,8 +224,8 @@ body {
   }
   
   ::-webkit-scrollbar-thumb:hover {
-	background: rgba(99, 102, 241, 0.5);
-	border: 1px solid rgba(168, 85, 247, 0.3);
+		background: rgba(99, 102, 241, 0.5);
+		border: 1px solid rgba(168, 85, 247, 0.3);
 	box-shadow: 
 	  inset 0 0 30px rgba(168, 85, 247, 0.3),
 	  0 0 15px rgba(99, 102, 241, 0.3);
@@ -78,12 +233,21 @@ body {
   
   /* When scrollbar is in active/clicked state */
   ::-webkit-scrollbar-thumb:active {
-	background: rgba(99, 102, 241, 0.6);
-	border: 1px solid rgba(168, 85, 247, 0.4);
+		background: rgba(99, 102, 241, 0.6);
+		border: 1px solid rgba(168, 85, 247, 0.4);
 	box-shadow: 
 	  inset 0 0 40px rgba(168, 85, 247, 0.4),
 	  0 0 20px rgba(99, 102, 241, 0.4);
   }
+
+/* Lighter scrollbar for white mode */
+html.light ::-webkit-scrollbar-track {
+	background: rgba(15,23,42,0.04);
+}
+html.light ::-webkit-scrollbar-thumb {
+	background: rgba(15,23,42,0.2);
+	border: 1px solid rgba(15,23,42,0.06);
+}
   
   ::-webkit-scrollbar-corner {
 	background: transparent;
@@ -107,7 +271,18 @@ body {
    animation: shine 1.5s ease-in-out infinite;
  }
 
-  
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-delay: -1ms !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    background-attachment: initial !important;
+    scroll-behavior: auto !important;
+    transition-delay: 0s !important;
+    transition-duration: 0s !important;
+  }
+}
+
 /*   @media (prefers-color-scheme: dark) {
 	::-webkit-scrollbar-track {
 	  background: rgba(3, 0, 20, 0.6);

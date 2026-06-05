@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <defs>
+    <linearGradient id="g3" x1="0" x2="1">
+      <stop offset="0" stop-color="#f97316"/>
+      <stop offset="1" stop-color="#ef4444"/>
+    </linearGradient>
+  </defs>
+  <rect width="100%" height="100%" fill="#04060a"/>
+  <rect x="30" y="30" width="740" height="390" rx="18" fill="url(#g3)" opacity="0.1"/>
+  <g fill="#fff" font-family="Poppins, sans-serif">
+    <text x="60" y="120" font-size="36" font-weight="700">Security Dashboard</text>
+    <text x="60" y="170" font-size="18" fill="#ffd7cd">Threat visualization and metrics</text>
+    <rect x="60" y="210" width="220" height="8" rx="4" fill="#fb923c" opacity="0.9"/>
+  </g>
+</svg>
