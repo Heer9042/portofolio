@@ -48,10 +48,6 @@ export default function Certificates() {
   ], [categories.length])
 
   useEffect(() => {
-    setPage(1)
-  }, [filter])
-
-  useEffect(() => {
     function onKeyDown(event) {
       if (event.key === 'Escape') setActive(null)
     }
@@ -70,6 +66,11 @@ export default function Certificates() {
   function go(n) {
     const next = Math.max(1, Math.min(totalPages, n))
     setPage(next)
+  }
+
+  function selectFilter(category) {
+    setFilter(category)
+    setPage(1)
   }
 
   return (
@@ -135,7 +136,7 @@ export default function Certificates() {
             <button
               key={category}
               type="button"
-              onClick={() => setFilter(category)}
+              onClick={() => selectFilter(category)}
               className={`px-4 py-2 rounded-full text-sm whitespace-nowrap transition border ${filter === category ? 'bg-indigo-600 text-white border-indigo-500/40' : 'bg-theme text-muted border-theme hover-theme'}`}
             >
               {category}

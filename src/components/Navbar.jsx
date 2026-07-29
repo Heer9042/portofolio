@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Menu, X } from 'lucide-react'
 import { m } from 'framer-motion'
-import ThemeToggle from './ThemeToggle'
 
 const LINKS = [
   { id: 'home', label: 'Home' },
@@ -12,10 +11,10 @@ const LINKS = [
   { id: 'contact', label: 'Contact' },
 ]
 
-export default function Navbar({ theme, setTheme }) {
+export default function Navbar() {
   const [open, setOpen] = useState(false)
   const [active, setActive] = useState('home')
-  const [scrolled, setScrolled] = useState(false)
+  const [scrolled, setScrolled] = useState(() => (typeof window !== 'undefined' ? window.scrollY > 20 : false))
 
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
@@ -36,8 +35,7 @@ export default function Navbar({ theme, setTheme }) {
     function onScroll() {
       setScrolled(window.scrollY > 20)
     }
-    onScroll()
-    window.addEventListener('scroll', onScroll)
+    window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
@@ -58,7 +56,6 @@ export default function Navbar({ theme, setTheme }) {
                 </li>
               ))}
             </ul>
-            <ThemeToggle theme={theme} setTheme={setTheme} />
           </div>
 
           <div className="md:hidden flex items-center gap-2">

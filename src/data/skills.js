@@ -8,7 +8,7 @@ export const CORE_PROFILE_SKILLS = [
 ]
 
 export const TECHNICAL_SKILLS = [
-  { label: 'Vite', value: 70 },
+  { label: 'Vite', value: 75 },
   { label: 'React', value: 80 },
   { label: 'JavaScript', value: 65 },
   { label: 'Python', value: 55 },
@@ -21,8 +21,8 @@ export const TECHNICAL_SKILLS = [
 export const CYBERSECURITY_SKILLS = [
   { label: 'Ethical Hacking', value: 10, description: 'Learning fundamentals, capture-the-flag practice, and safety-first approach.' },
   { label: 'Web Vulnerabilities', value: 20, description: 'Understanding XSS, SQLi basics and how to test safely.' },
-  { label: 'Burp Suite (Request Analysis)', value: 35, description: 'Proxying, intercepting requests, and basic scanning workflows.' },
-  { label: 'Nmap (Recon)', value: 10, description: 'Basic scanning and service discovery for lab exercises.' },
+  { label: 'Burp Suite ', value: 15, description: 'Proxying, intercepting requests, and basic scanning workflows.' },
+  { label: 'Nmap ', value: 10, description: 'Basic scanning and service discovery for lab exercises.' },
   { label: 'Security testing mindset', value: 15, description: 'Risk-aware testing and documenting findings responsibly.' },
 ]
 

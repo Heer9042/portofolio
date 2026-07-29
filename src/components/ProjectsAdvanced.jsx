@@ -59,8 +59,8 @@ export default function ProjectsAdvanced() {
   const filtered = useMemo(() => (filter === 'All' ? projects : projects.filter((p) => p.category === filter)), [filter, projects])
 
   const sorted = useMemo(() => {
-    if (sortOrder === 'Popular') return [...filtered].sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0))
-    if (sortOrder === 'Newest') return [...filtered].sort((a, b) => (b.id > a.id ? 1 : -1))
+    if (sortOrder === 'Popular') return filtered.toSorted((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0))
+    if (sortOrder === 'Newest') return filtered.toSorted((a, b) => (b.id > a.id ? 1 : -1))
     return filtered
   }, [filtered, sortOrder])
 
@@ -77,33 +77,41 @@ export default function ProjectsAdvanced() {
 
   useEffect(() => {
     let cancelled = false
-    async function fetchGitHub() {
+
+    async function fetchGitHubProjects() {
       try {
-        const res = await fetch('https://api.github.com/users/Heer9042/repos?per_page=100')
-        if (!res.ok) throw new Error('GitHub API error')
-        const data = await res.json()
-        const mapped = data
-          .filter((r) => !r.fork)
-          .map((r) => ({
-            id: r.id,
-            title: r.name,
-            short: r.description || '',
-            desc: r.description || '',
-            image: `https://opengraph.githubassets.com/1/${r.full_name}`,
-            category: r.language || 'Other',
-            tags: ([...(r.topics || [])].concat(r.language || [])).filter(Boolean),
-            github: r.html_url,
-            live: r.homepage || (r.has_pages ? `https://${r.owner.login}.github.io/${r.name}` : ''),
-            featured: r.stargazers_count > 0 || (r.topics || []).includes('featured'),
+        const response = await fetch('https://api.github.com/users/Heer9042/repos?per_page=100&sort=updated')
+        if (!response.ok) throw new Error('GitHub API error')
+
+        const repos = await response.json()
+        const mapped = repos
+          .filter((repo) => !repo.fork)
+          .map((repo) => ({
+            id: repo.id,
+            title: repo.name,
+            short: repo.description || 'GitHub repository',
+            desc: repo.description || 'GitHub repository',
+            image: `https://opengraph.githubassets.com/1/${repo.full_name}`,
+            category: repo.language || 'Other',
+            tags: [repo.language, ...(repo.topics || [])].filter(Boolean),
+            github: repo.html_url,
+            live: repo.homepage || '',
+            featured: repo.stargazers_count > 0 || (repo.topics || []).includes('featured'),
           }))
-        if (!cancelled && mapped.length) setProjects(mapped)
-      } catch (err) {
-        console.warn('Failed to fetch GitHub repos, using local projects', err)
-        // keep local projects as fallback
+
+        if (!cancelled && mapped.length) {
+          setProjects(mapped)
+        }
+      } catch (error) {
+        console.warn('GitHub projects unavailable, using local portfolio data', error)
       }
     }
-    fetchGitHub()
-    return () => { cancelled = true }
+
+    fetchGitHubProjects()
+
+    return () => {
+      cancelled = true
+    }
   }, [])
 
   function goToPage(n) {

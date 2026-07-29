@@ -129,7 +129,7 @@ export default function Footer() {
           <p className="
             text-xs sm:text-sm
             text-slate-500 dark:text-gray-400
-          ">
+          " suppressHydrationWarning>
             © {new Date().getFullYear()} Heer Patel. All rights reserved.
           </p>
 

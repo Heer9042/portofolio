@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { m } from 'framer-motion'
 import PropTypes from 'prop-types'
 import MotionButton from './ui/MotionButton'
@@ -14,6 +14,8 @@ const container = {
 }
 
 function SkillBar({ label, value }) {
+  const barRef = useRef(null)
+
   return (
     <div>
       <div className="flex justify-between text-xs text-muted mb-1">
@@ -22,12 +24,14 @@ function SkillBar({ label, value }) {
       </div>
       <div className="w-full bg-theme h-2 rounded-full overflow-hidden">
         <m.div
+          ref={barRef}
           className="h-full bg-gradient-to-r from-indigo-400 to-pink-500"
           initial={{ width: '0%' }}
           whileInView={{ width: `${value}%` }}
           viewport={{ once: true, amount: 0.6 }}
           transition={{ duration: 0.9, ease: 'easeOut' }}
-          style={{ willChange: 'width' }}
+          onViewportEnter={() => { if (barRef.current) barRef.current.style.willChange = 'width' }}
+          onAnimationComplete={() => { if (barRef.current) barRef.current.style.willChange = '' }}
         />
       </div>
     </div>
@@ -44,11 +48,38 @@ function parseStructured(text) {
     .trim()
     .split('\n\n')
     .map((block) => {
-      const lines = block.split('\n').map((l) => l.trim()).filter(Boolean)
+      const lines = block.split('\n').flatMap((l) => {
+        const trimmed = l.trim()
+        return trimmed ? [trimmed] : []
+      })
       const title = lines[0] || ''
-      const items = lines.slice(1).map((l) => l.replace(/^[-+\s]*/g, '').trim()).filter(Boolean)
+      const items = lines.slice(1).flatMap((l) => {
+        const cleaned = l.replace(/^[-+\s]*/g, '').trim()
+        return cleaned ? [cleaned] : []
+      })
       return { title, items }
     })
+}
+
+function toMarkdown(sections) {
+  return sections
+    .map((s) => {
+      const items = s.items.map((i) => `- ${i}`).join('\n')
+      return `## ${s.title}\n\n${items}`
+    })
+    .join('\n\n')
+}
+
+function downloadStructuredText() {
+  const blob = new Blob([STRUCTURED.trim()], { type: 'text/plain;charset=utf-8' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = 'Heer_Patel_Skills.txt'
+  document.body.appendChild(a)
+  a.click()
+  a.remove()
+  URL.revokeObjectURL(url)
 }
 
 export default function Skills() {
@@ -65,27 +96,6 @@ export default function Skills() {
     } catch {
       setCopied(false)
     }
-  }
-
-  function toMarkdown(sections) {
-    return sections
-      .map((s) => {
-        const items = s.items.map((i) => `- ${i}`).join('\n')
-        return `## ${s.title}\n\n${items}`
-      })
-      .join('\n\n')
-  }
-
-  function downloadText() {
-    const blob = new Blob([STRUCTURED.trim()], { type: 'text/plain;charset=utf-8' })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = 'Heer_Patel_Skills.txt'
-    document.body.appendChild(a)
-    a.click()
-    a.remove()
-    URL.revokeObjectURL(url)
   }
 
   useEffect(() => {
@@ -105,7 +115,7 @@ export default function Skills() {
         <div aria-hidden className="absolute inset-0 -z-10 pointer-events-none">
           <div className="absolute -inset-x-40 -top-40 -bottom-20 blur-3xl opacity-40" style={{ background: 'radial-gradient(600px 400px at 10% 20%, rgba(0,187,255,0.12), transparent 8%), radial-gradient(600px 400px at 90% 80%, rgba(255,0,170,0.08), transparent 10%)' }} />
         </div>
-        <m.h2 initial={{ opacity: 0, y: 8 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6">Skills</m.h2>
+        <m.h2 initial={{ opacity: 0, y: 8 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="text-2xl sm:text-3xl md:text-4xl font-bold bold-effect mb-6">Skills</m.h2>
 
         
 
@@ -179,7 +189,7 @@ export default function Skills() {
 
         {modalOpen && (
           <m.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 flex items-center justify-center px-4">
-            <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-transparent to-black/70 backdrop-blur-sm" onClick={() => { setModalOpen(false); setShowAll(false) }} />
+            <button type="button" aria-label="Close skills modal" className="absolute inset-0 bg-gradient-to-br from-black/60 via-transparent to-black/70 backdrop-blur-sm" onClick={() => { setModalOpen(false); setShowAll(false) }} />
             <m.div initial={{ y: 8, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.18 }} className="relative max-w-3xl w-full mx-auto p-6 rounded-xl glass-theme ring-1 border-theme shadow-2xl" role="dialog" aria-modal="true" aria-labelledby="skills-modal-title">
               <button type="button" aria-label="Close" onClick={() => { setModalOpen(false); setShowAll(false) }} className="absolute right-3 top-3 text-gray-300 hover:text-white p-1 rounded-md"><HiOutlineX size={20} /></button>
 
@@ -192,7 +202,7 @@ export default function Skills() {
                 <div className="flex items-center gap-2">
                   <MotionButton onClick={() => copyText('plain')} className="px-3 py-1 text-sm bg-[var(--primary)] text-black rounded-md">{copied ? 'Copied' : 'Copy'}</MotionButton>
                   <MotionButton onClick={() => copyText('md')} className="px-3 py-1 text-sm bg-theme border-theme rounded-md">Copy MD</MotionButton>
-                  <MotionButton onClick={downloadText} className="px-3 py-1 text-sm bg-theme border-theme rounded-md">Download</MotionButton>
+                  <MotionButton onClick={downloadStructuredText} className="px-3 py-1 text-sm bg-theme border-theme rounded-md">Download</MotionButton>
                 </div>
               </div>
 
@@ -205,8 +215,8 @@ export default function Skills() {
                         <span className="text-xs text-gray-400">{sec.items.length} items</span>
                       </div>
                       <div className="mt-3 flex flex-wrap gap-2">
-                        {sec.items.map((it, idx) => (
-                          <span key={idx} className="inline-flex items-center px-2 py-0.5 bg-theme rounded-full text-xs text-muted">{it}</span>
+                        {sec.items.map((it) => (
+                          <span key={`${sec.title}-${it}`} className="inline-flex items-center px-2 py-0.5 bg-theme rounded-full text-xs text-muted">{it}</span>
                         ))}
                       </div>
                     </div>

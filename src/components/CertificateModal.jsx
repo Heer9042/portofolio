@@ -8,7 +8,7 @@ export default function CertificateModal({ open, onClose, cert }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
-      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
+      <button type="button" aria-label="Close certificate modal" onClick={onClose} className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
       <m.div
         initial={{ scale: 0.96, opacity: 0, y: 12 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}

@@ -35,8 +35,8 @@ export default function Projects() {
                   {p.tags.map((t) => <span key={t} className="px-2 py-1 bg-white/5 rounded-full">{t}</span>)}
                 </div>
                 <div className="flex gap-2">
-                  <a className="px-3 py-1 bg-white/5 rounded-md text-sm">Code</a>
-                  <a className="px-3 py-1 bg-indigo-600 rounded-md text-sm text-white">Live</a>
+                  <button type="button" className="px-3 py-1 bg-white/5 rounded-md text-sm">Code</button>
+                  <button type="button" className="px-3 py-1 bg-indigo-600 rounded-md text-sm text-white">Live</button>
                 </div>
               </div>
             </m.div>
