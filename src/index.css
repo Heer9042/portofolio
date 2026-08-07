@@ -5,28 +5,81 @@
 /* Smooth scrolling */
 html {
   scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
 	scroll-behavior: smooth;
+	min-height: 100dvh;
 }
 
-/* Touch-friendly buttons */
-button, a {
+/* Responsive media */
+img,
+video,
+iframe,
+embed,
+object {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Touch-friendly interactive targets (not all inline text links) */
+button,
+input[type="submit"],
+input[type="button"],
+input[type="reset"],
+select,
+.touch-target {
   min-height: 44px;
-  min-width: 44px;
 }
 
-/* Mobile-first base styles */
-@media (max-width: 640px) {
-  body {
-    font-size: 14px;
-  }
+/* Mobile-first base typography via clamp */
+body {
+  font-size: clamp(0.875rem, 0.5vw + 0.75rem, 1rem);
+  line-height: 1.6;
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
+}
+
+h1, h2, h3, h4 {
+  overflow-wrap: break-word;
+  hyphens: auto;
 }
 
 /* Prevent zoom on input focus on iOS */
 input, textarea, select {
   font-size: 16px;
+  max-width: 100%;
+}
+
+/* Focus states for keyboard navigation */
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Horizontal scroll prevention */
+html,
+body,
+#root {
+  overflow-x: clip;
+  max-width: 100vw;
+}
+
+/* Section container for ultra-wide screens */
+.section-container {
+  width: 100%;
+  max-width: min(72rem, 100% - 2rem);
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 3vw, 1.5rem);
+}
+
+@media (min-width: 2560px) {
+  .section-container {
+    max-width: 80rem;
+  }
 }
 
 /* Smooth transitions */
@@ -52,7 +105,7 @@ html[class~="dark"] {
 
 html,
 body {
-	overflow-x: hidden;
+	overflow-x: clip;
 		background: var(--bg);
 	scroll-behavior: smooth !important;
 }

@@ -74,18 +74,18 @@ export default function Certificates() {
   }
 
   return (
-    <section id="certificates" className="py-16 sm:py-20 relative overflow-hidden">
-      <div aria-hidden className="absolute inset-0 -z-10 pointer-events-none">
+    <section id="certificates" className="py-12 sm:py-16 md:py-20 relative overflow-hidden w-full">
+      <div aria-hidden className="absolute inset-0 -z-10 pointer-events-none overflow-hidden">
         <div className="absolute inset-x-0 top-0 h-72 bg-[radial-gradient(circle_at_top,rgba(99,102,241,0.22),transparent_50%)]" />
         <div className="absolute -left-24 top-24 h-72 w-72 rounded-full bg-cyan-500/10 blur-3xl" />
         <div className="absolute -right-24 bottom-0 h-72 w-72 rounded-full bg-fuchsia-500/10 blur-3xl" />
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 relative">
-        <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between mb-8 sm:mb-10">
-          <div className="max-w-2xl">
+      <div className="max-w-6xl 3xl:max-w-8xl mx-auto px-4 sm:px-6 relative w-full">
+        <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between mb-6 sm:mb-8 md:mb-10">
+          <div className="max-w-2xl min-w-0">
             <p className="text-xs sm:text-sm uppercase tracking-[0.35em] text-indigo-400 mb-3">Learning proof</p>
-            <m.h2 initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }} className="text-3xl sm:text-4xl md:text-5xl font-bold text-white">
+            <m.h2 initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }} className="text-heading-lg font-bold text-white">
               Certificates
             </m.h2>
             <p className="mt-3 text-sm sm:text-base text-gray-300 max-w-xl">
@@ -131,13 +131,13 @@ export default function Certificates() {
           )}
         </div>
 
-        <div className="flex gap-2 sm:gap-3 mb-6 sm:mb-8 overflow-auto pb-2">
+        <div className="flex gap-2 sm:gap-3 mb-4 sm:mb-6 md:mb-8 overflow-x-auto pb-2 -mx-1 px-1">
           {categories.map((category) => (
             <button
               key={category}
               type="button"
               onClick={() => selectFilter(category)}
-              className={`px-4 py-2 rounded-full text-sm whitespace-nowrap transition border ${filter === category ? 'bg-indigo-600 text-white border-indigo-500/40' : 'bg-theme text-muted border-theme hover-theme'}`}
+              className={`px-3 sm:px-4 py-2 min-h-[44px] rounded-full text-xs sm:text-sm whitespace-nowrap shrink-0 transition border touch-target ${filter === category ? 'bg-indigo-600 text-white border-indigo-500/40' : 'bg-theme text-muted border-theme hover-theme'}`}
             >
               {category}
             </button>
@@ -154,11 +154,11 @@ export default function Certificates() {
                   variants={itemVariants}
                   whileHover={{ y: -6, scale: 1.01 }}
                   whileTap={{ scale: 0.99 }}
-                  className="text-left p-4 rounded-2xl bg-theme border-theme shadow-theme cursor-pointer transition hover-theme"
+                  className="text-left p-4 rounded-2xl bg-theme border-theme shadow-theme cursor-pointer transition hover-theme w-full min-w-0"
                   onClick={() => setActive(c)}
                 >
-                    <div className="relative h-52 overflow-hidden rounded-2xl mb-4 bg-theme">
-                    <img src={c.image} alt={c.title} className="w-full h-full object-cover" />
+                    <div className="relative h-44 sm:h-52 overflow-hidden rounded-2xl mb-4 bg-theme">
+                    <img src={c.image} alt={c.title} loading="lazy" className="w-full h-full object-cover" />
                     <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/70 to-transparent" />
                     
                     <div className="absolute right-3 top-3 rounded-full bg-emerald-500/90 p-2 shadow-lg shadow-emerald-500/20">

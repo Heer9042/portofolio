@@ -6,27 +6,25 @@ import PropTypes from 'prop-types'
 
 function ProjectCard({ p }) {
   return (
-    <m.div whileHover={{ scale: 1.03, translateY: -6 }} whileTap={{ scale: 0.995 }} layout className="p-4 rounded-xl bg-theme border-theme shadow-theme hover-theme">
-        <div className="relative rounded-md overflow-hidden h-40 bg-gradient-to-tr from-indigo-700 to-pink-600 mb-3">
-          <img src={p.image} alt={p.title} className="w-full h-full object-cover brightness-90" />
+    <m.div whileHover={{ scale: 1.03, translateY: -6 }} whileTap={{ scale: 0.995 }} layout className="p-4 rounded-xl bg-theme border-theme shadow-theme hover-theme h-full flex flex-col min-w-0">
+        <div className="relative rounded-md overflow-hidden h-36 sm:h-40 bg-gradient-to-tr from-indigo-700 to-pink-600 mb-3 shrink-0">
+          <img src={p.image} alt={p.title} loading="lazy" className="w-full h-full object-cover brightness-90" />
         </div>
-      <div>
-        <div className="flex items-start justify-between">
-          <div>
-            <h3 className="text-white font-semibold">{p.title}</h3>
-            <p className="text-sm text-muted">{p.short}</p>
-          </div>
+      <div className="flex flex-col flex-1 min-w-0">
+        <div className="min-w-0">
+            <h3 className="text-white font-semibold truncate">{p.title}</h3>
+            <p className="text-sm text-muted line-clamp-2">{p.short}</p>
         </div>
 
-            <div className="mt-3 flex items-center justify-between">
-          <div className="flex gap-2">
-            {p.tags.map((t) => (
-                  <span key={t} className="text-xs px-2 py-1 rounded-full bg-theme border-theme text-muted">{t}</span>
+        <div className="mt-auto pt-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-wrap gap-1.5 sm:gap-2 min-w-0">
+            {p.tags.slice(0, 4).map((t) => (
+                  <span key={t} className="text-xs px-2 py-1 rounded-full bg-theme border-theme text-muted whitespace-nowrap">{t}</span>
             ))}
           </div>
-          <div className="flex gap-2">
-            <MotionButton as="a" href={p.github || '#'} className="px-3 py-1 rounded-md text-sm bg-theme border-theme text-muted">Code</MotionButton>
-            <MotionButton as="a" href={p.live || '#'} className="px-3 py-1 bg-indigo-600 rounded-md text-sm text-white">Live</MotionButton>
+          <div className="flex gap-2 shrink-0">
+            <MotionButton as="a" href={p.github || '#'} className="px-3 py-2 min-h-[44px] rounded-md text-sm bg-theme border-theme text-muted touch-target">Code</MotionButton>
+            <MotionButton as="a" href={p.live || '#'} className="px-3 py-2 min-h-[44px] bg-indigo-600 rounded-md text-sm text-white touch-target">Live</MotionButton>
           </div>
         </div>
       </div>
@@ -120,28 +118,28 @@ export default function ProjectsAdvanced() {
   }
 
   return (
-    <m.section id="projects" className="py-16 sm:py-20" initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.7 }}>
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 sm:mb-8 gap-3 sm:gap-0">
-          <div>
-            <m.h2 initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }} className="text-2xl sm:text-3xl font-bold text-theme">Projects</m.h2>
+    <m.section id="projects" className="py-12 sm:py-16 md:py-20 w-full overflow-hidden" initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.7 }}>
+      <div className="max-w-6xl 3xl:max-w-8xl mx-auto px-4 sm:px-6 w-full">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 sm:mb-6 md:mb-8 gap-3">
+          <div className="min-w-0">
+            <m.h2 initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }} className="text-heading font-bold text-theme">Projects</m.h2>
             {featured && (
-              <p className="mt-2 text-sm text-muted">
+              <p className="mt-2 text-sm text-muted break-words">
                 Spotlight: <span className="text-white font-medium">{featured.title}</span> from your GitHub profile
               </p>
             )}
           </div>
           <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
-            <select value={sortOrder} onChange={(e) => { setSortOrder(e.target.value); setPage(1) }} className="flex-1 sm:flex-none bg-theme text-xs sm:text-sm p-2.5 rounded text-muted border-theme focus:border-indigo-500/40 transition cursor-pointer">
+            <select value={sortOrder} onChange={(e) => { setSortOrder(e.target.value); setPage(1) }} aria-label="Sort projects" className="w-full sm:w-auto min-h-[44px] bg-theme text-xs sm:text-sm p-2.5 rounded text-muted border-theme focus:border-indigo-500/40 transition cursor-pointer">
               <option>Newest</option>
               <option>Popular</option>
             </select>
           </div>
         </div>
 
-        <div className="flex gap-1.5 sm:gap-2 mb-6 sm:mb-8 overflow-auto pb-2">
+        <div className="flex gap-1.5 sm:gap-2 mb-4 sm:mb-6 md:mb-8 overflow-x-auto pb-2 -mx-1 px-1 scrollbar-thin">
           {CATEGORIES.map((c) => (
-            <button type="button" key={c} onClick={() => { setFilter(c); setPage(1) }} className={`px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm rounded-full transition whitespace-nowrap ${filter === c ? 'bg-indigo-600 text-white' : 'bg-theme text-muted hover-theme border-theme'}`}>{c}</button>
+            <button type="button" key={c} onClick={() => { setFilter(c); setPage(1) }} className={`px-2.5 sm:px-3 py-2 min-h-[44px] text-xs sm:text-sm rounded-full transition whitespace-nowrap shrink-0 touch-target ${filter === c ? 'bg-indigo-600 text-white' : 'bg-theme text-muted hover-theme border-theme'}`}>{c}</button>
           ))}
         </div>
 
@@ -176,7 +174,7 @@ export default function ProjectsAdvanced() {
         {/* Show more / show less */}
         {page < totalPages ? (
           <div className="mt-6 sm:mt-8 flex justify-center">
-            <button type="button" onClick={() => setPage((p) => Math.min(totalPages, p + 1))} className="px-4 sm:px-5 py-2 sm:py-2.5 text-sm sm:text-base rounded bg-indigo-600 text-white hover:bg-indigo-700 transition">Show more</button>
+            <button type="button" onClick={() => setPage((p) => Math.min(totalPages, p + 1))} className="w-full sm:w-auto px-4 sm:px-5 py-2.5 min-h-[44px] text-sm sm:text-base rounded bg-indigo-600 text-white hover:bg-indigo-700 transition touch-target">Show more</button>
           </div>
         ) : (
           sorted.length > pageSize && (

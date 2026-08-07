@@ -19,9 +19,9 @@ export default function App() {
 
   return (
     <LazyMotion features={domAnimation}>
-      <m.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="min-h-screen" style={{ background: 'var(--bg)', color: 'var(--text)' }}>
+      <m.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="min-h-screen overflow-x-clip w-full" style={{ background: 'var(--bg)', color: 'var(--text)' }}>
         <Navbar />
-        <main className="pt-20">
+        <main className="pt-16 sm:pt-20 w-full overflow-x-clip">
           <Hero />
           <About />
           <Skills />

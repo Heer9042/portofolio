@@ -1,54 +1,53 @@
 import { m } from "framer-motion";
-import { Github, Linkedin, Mail } from "lucide-react";
+import { Github, Linkedin, Mail, ArrowUp } from "lucide-react";
 
 export default function Footer() {
+  const links = [
+    { id: "home", label: "Home" },
+    { id: "about", label: "About" },
+    { id: "skills", label: "Skills" },
+    { id: "projects", label: "Projects" },
+    { id: "certificates", label: "Certificates" },
+    { id: "contact", label: "Contact" },
+  ];
+
   return (
     <m.footer
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       transition={{ duration: 0.6 }}
       viewport={{ once: true }}
-      className="
-        py-12 mt-16 border-t
-        border-slate-200 dark:border-white/10
-        bg-white dark:bg-[#0a0f1a]
-      "
+      className="py-10 sm:py-12 mt-12 sm:mt-16 border-t border-white/10 bg-transparent text-theme w-full overflow-hidden"
     >
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
-
+      <div className="max-w-6xl 3xl:max-w-8xl mx-auto px-4 sm:px-6 w-full">
         {/* TOP SECTION */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
-
-          {/* LEFT */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 mb-10 items-start">
+          {/* LEFT: Bio & Socials */}
           <m.div
             initial={{ opacity: 0, x: -10 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
+            className="md:col-span-7 min-w-0"
           >
-            <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
+            <h2 className="text-xl font-bold" style={{ color: 'var(--primary)' }}>
               Heer Patel
             </h2>
 
-            <p className="text-sm text-slate-600 dark:text-gray-400 mt-2 max-w-md">
-              Full Stack Developer & Cybersecurity enthusiast focused on web
-              security, tools, and building reliable applications.
+            <p className="text-sm text-muted mt-2 max-w-md leading-relaxed">
+              MCA Student & Cybersecurity Enthusiast focused on web security, ethical hacking, and building reliable applications.
             </p>
 
             {/* SOCIAL LINKS */}
-            <div className="mt-5 flex items-center gap-4">
-
+            <div className="mt-5 flex flex-wrap items-center gap-5">
               <a
                 href="https://github.com/Heer9042"
                 target="_blank"
                 rel="noreferrer"
-                className="
-                  flex items-center gap-2 text-sm
-                  text-slate-500 dark:text-gray-400
-                  hover:text-emerald-500 transition
-                "
+                aria-label="GitHub profile"
+                className="flex items-center gap-2 text-sm text-muted hover:text-[var(--primary)] transition"
               >
-                <Github size={16} />
+                <Github size={16} aria-hidden />
                 GitHub
               </a>
 
@@ -56,80 +55,55 @@ export default function Footer() {
                 href="https://www.linkedin.com/in/heerpatel9042/"
                 target="_blank"
                 rel="noreferrer"
-                className="
-                  flex items-center gap-2 text-sm
-                  text-slate-500 dark:text-gray-400
-                  hover:text-emerald-500 transition
-                "
+                aria-label="LinkedIn profile"
+                className="flex items-center gap-2 text-sm text-muted hover:text-[var(--primary)] transition"
               >
-                <Linkedin size={16} />
+                <Linkedin size={16} aria-hidden />
                 LinkedIn
               </a>
 
               <a
                 href="mailto:heerpatel904242@gmail.com"
-                className="
-                  flex items-center gap-2 text-sm
-                  text-slate-500 dark:text-gray-400
-                  hover:text-emerald-500 transition
-                "
+                aria-label="Send email"
+                className="flex items-center gap-2 text-sm text-muted hover:text-[var(--primary)] transition"
               >
-                <Mail size={16} />
+                <Mail size={16} aria-hidden />
                 Email
               </a>
-
             </div>
           </m.div>
 
-          {/* RIGHT */}
+          {/* RIGHT: Quick Links in Horizontal Row Layout */}
           <m.div
             initial={{ opacity: 0, x: 10 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
+            className="md:col-span-5 min-w-0"
           >
-            <h4 className="text-sm font-semibold text-slate-900 dark:text-white mb-4">
+            <h4 className="text-sm font-semibold uppercase tracking-wider text-theme mb-4">
               Quick Links
             </h4>
 
-            <div className="flex flex-col gap-2 text-sm">
-
-              {[
-                "home",
-                "about",
-                "skills",
-                "projects",
-                "certificates",
-                "contact",
-              ].map((item) => (
-                <a
-                  key={item}
-                  href={`#${item}`}
-                  className="
-                    text-slate-500 dark:text-gray-400
-                    hover:text-emerald-500 transition
-                  "
-                >
-                  {item.charAt(0).toUpperCase() + item.slice(1)}
-                </a>
+            {/* Quick Links displayed in a horizontal row */}
+            <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
+              {links.map((item) => (
+                <li key={item.id}>
+                  <a
+                    href={`#${item.id}`}
+                    className="text-muted hover:text-[var(--primary)] transition py-1 inline-flex items-center font-medium"
+                  >
+                    {item.label}
+                  </a>
+                </li>
               ))}
-
-            </div>
+            </ul>
           </m.div>
         </div>
 
         {/* BOTTOM BAR */}
-        <div className="
-          pt-6 border-t
-          border-slate-200 dark:border-white/10
-          flex flex-col sm:flex-row
-          items-center justify-between gap-4
-        ">
-
-          <p className="
-            text-xs sm:text-sm
-            text-slate-500 dark:text-gray-400
-          " suppressHydrationWarning>
+        <div className="pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="text-xs sm:text-sm text-muted">
             © {new Date().getFullYear()} Heer Patel. All rights reserved.
           </p>
 
@@ -137,25 +111,16 @@ export default function Footer() {
           <button
             type="button"
             onClick={() => {
-              const el =
-                document.getElementById("top") ||
-                document.getElementById("home");
-
+              const el = document.getElementById("top") || document.getElementById("home");
               if (el) el.scrollIntoView({ behavior: "smooth" });
               else window.scrollTo({ top: 0, behavior: "smooth" });
             }}
-            className="
-              px-4 py-2 rounded-full
-              bg-slate-100 dark:bg-white/5
-              text-slate-700 dark:text-gray-300
-              border border-slate-200 dark:border-white/10
-              hover:border-emerald-400 dark:hover:border-emerald-400
-              hover:text-emerald-500 transition
-            "
+            className="text-muted hover:text-[var(--primary)] transition flex items-center gap-1.5 text-xs sm:text-sm font-medium cursor-pointer"
+            aria-label="Back to top"
           >
-            ↑ Back to top
+            <ArrowUp size={14} aria-hidden />
+            Back to top
           </button>
-
         </div>
       </div>
     </m.footer>

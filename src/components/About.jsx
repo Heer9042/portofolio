@@ -88,9 +88,9 @@ export default function About() {
   }, [])
 
   return (
-    <m.section id="about" className="py-16 sm:py-20 bg-gradient-to-b from-black/0 via-black/20 to-black/0" initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.7 }}>
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <m.h2 initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }} className="text-2xl sm:text-3xl md:text-4xl font-bold mb-8 sm:mb-12">About</m.h2>
+    <m.section id="about" className="py-12 sm:py-16 md:py-20 bg-gradient-to-b from-black/0 via-black/20 to-black/0 w-full overflow-hidden" initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.7 }}>
+      <div className="max-w-6xl 3xl:max-w-8xl mx-auto px-4 sm:px-6 w-full">
+        <m.h2 initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }} className="text-heading font-bold mb-6 sm:mb-8 md:mb-12">About</m.h2>
 
         {/* Main intro + stats grid */}
         <m.div variants={containerVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} className="grid grid-cols-1 md:grid-cols-12 gap-4 sm:gap-6 mb-12">
@@ -99,7 +99,7 @@ export default function About() {
             <p className="text-xs uppercase tracking-[0.3em] text-indigo-400 mb-3">Profile</p>
             <h3 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">About Heer Patel</h3>
             <p className="text-sm sm:text-base leading-relaxed mb-4">
-              I’m Heer Patel, a BCA student focused on cybersecurity and modern web development. I build small projects, learn from real examples, and keep improving by working through practical problems.
+              I’m Heer Patel, an MCA student (having completed my BCA) focused on cybersecurity and modern web development. I build small projects, learn from real examples, and keep improving by working through practical problems.
             </p>
             <p className="text-sm sm:text-base leading-relaxed">
               My GitHub projects show a mixed stack: JavaScript, Python, PHP, HTML, CSS, and Batchfile. I like creating websites that are safe, simple, and easy to use.
@@ -132,10 +132,10 @@ export default function About() {
         </m.div>
 
         {/* Stats Section */}
-        <m.div variants={containerVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+        <m.div variants={containerVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 md:gap-4">
           {stats.map((s) => (
-            <m.div key={s.label} variants={itemVariants} whileHover={{ y: -4 }} className="group p-4 sm:p-6 rounded-xl border-theme bg-theme text-theme transition cursor-default shadow-theme">
-              <p className="text-2xl sm:text-3xl md:text-4xl font-bold">
+            <m.div key={s.label} variants={itemVariants} whileHover={{ y: -4 }} className="group p-3 sm:p-4 md:p-6 rounded-xl border-theme bg-theme text-theme transition cursor-default shadow-theme min-w-0">
+              <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold truncate">
                 <CountUp value={s.live ? experienceValue : s.value} suffix={s.suffix} precision={s.precision} />
               </p>
               <p className="text-xs sm:text-sm text-muted mt-2 transition">{s.label}</p>
