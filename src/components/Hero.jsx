@@ -30,7 +30,7 @@ export default function Hero() {
             />
           </div>
 
-          <p className="mt-4 sm:mt-6 text-body max-w-xl fade-rise" style={{ color: 'var(--text)' }}>I have completed my BCA and am currently pursuing my MCA. I like learning about web security and fixing problems on websites. I learn fast and like to try things by building them.</p>
+          <p className="mt-4 sm:mt-6 text-body max-w-xl fade-rise" style={{ color: 'var(--text)' }}>I have completed BCA and I'm currently pursuing MCA. I like learning about web security and fixing problems on websites. I learn fast and like to try things by building them.</p>
 
           <div className="mt-6 flex flex-col sm:flex-row flex-wrap gap-3 w-full">
             <MotionButton as="a" href="#projects" className="w-full sm:w-auto px-4 py-2.5 min-h-[44px] text-sm sm:text-base rounded-md text-black text-center touch-target" style={{ background: 'linear-gradient(90deg, var(--primary), var(--secondary))' }}>View Projects</MotionButton>

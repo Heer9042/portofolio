@@ -2,9 +2,9 @@ import { useState, useEffect, useRef } from 'react'
 import { m } from 'framer-motion'
 import PropTypes from 'prop-types'
 import MotionButton from './ui/MotionButton'
-import { FaCode, FaShieldAlt } from 'react-icons/fa'
+import { FaCode, FaShieldAlt, FaServer, FaLayerGroup } from 'react-icons/fa'
 import { HiOutlineX } from 'react-icons/hi'
-import { STRUCTURED, TECHNICAL_SKILLS, CYBERSECURITY_SKILLS } from '../data/skills'
+import { STRUCTURED, TECHNICAL_SKILLS, CYBERSECURITY_SKILLS, SERVER_HARDWARE_SKILLS } from '../data/skills'
 
 
 
@@ -61,48 +61,13 @@ function parseStructured(text) {
     })
 }
 
-function toMarkdown(sections) {
-  return sections
-    .map((s) => {
-      const items = s.items.map((i) => `- ${i}`).join('\n')
-      return `## ${s.title}\n\n${items}`
-    })
-    .join('\n\n')
-}
-
-function downloadStructuredText() {
-  const blob = new Blob([STRUCTURED.trim()], { type: 'text/plain;charset=utf-8' })
-  const url = URL.createObjectURL(blob)
-  const a = document.createElement('a')
-  a.href = url
-  a.download = 'Heer_Patel_Skills.txt'
-  document.body.appendChild(a)
-  a.click()
-  a.remove()
-  URL.revokeObjectURL(url)
-}
-
 export default function Skills() {
-  const [showAll, setShowAll] = useState(false)
-  const [copied, setCopied] = useState(false)
   const [modalOpen, setModalOpen] = useState(false)
-
-  async function copyText(mode = 'plain') {
-    try {
-      const text = mode === 'md' ? toMarkdown(parseStructured(STRUCTURED)) : STRUCTURED.trim()
-      await navigator.clipboard.writeText(text)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 1800)
-    } catch {
-      setCopied(false)
-    }
-  }
 
   useEffect(() => {
     function onKey(e) {
       if (e.key === 'Escape') {
         setModalOpen(false)
-        setShowAll(false)
       }
     }
     if (modalOpen) window.addEventListener('keydown', onKey)
@@ -117,42 +82,77 @@ export default function Skills() {
         </div>
         <m.h2 initial={{ opacity: 0, y: 8 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="text-heading font-bold bold-effect mb-4 sm:mb-6">Skills</m.h2>
 
-        
-
-        <m.div variants={container} initial="hidden" whileInView="show" viewport={{ once: true }} className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-          <m.div variants={{ hidden: { opacity: 0, y: 8 }, show: { opacity: 1, y: 0 } }} whileHover={{ scale: 1.02 }} className="p-4 sm:p-6 rounded-2xl glass-theme border-theme shadow-theme min-w-0">
-            <div className="flex flex-col gap-4 mb-4">
-              <div className="flex items-start gap-3 min-w-0">
-                <div className="p-3 rounded-md bg-theme text-[var(--primary)] border-theme shrink-0"><FaShieldAlt size={20} /></div>
+        <m.div variants={container} initial="hidden" whileInView="show" viewport={{ once: true }} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-6">
+          {/* Microsoft Server & Hardware Card */}
+          <m.div variants={{ hidden: { opacity: 0, y: 8 }, show: { opacity: 1, y: 0 } }} whileHover={{ scale: 1.02 }} className="p-4 sm:p-6 rounded-2xl glass-theme border-theme shadow-theme min-w-0 flex flex-col justify-between">
+            <div>
+              <div className="flex items-start gap-3 mb-4">
+                <div className="p-3 rounded-md bg-theme text-[var(--primary)] border-theme shrink-0"><FaServer size={20} /></div>
                 <div className="min-w-0">
-                  <h3 className="font-semibold text-lg sm:text-xl">Cybersecurity</h3>
-                  <p className="text-sm text-gray-300">Hands-on learning and practical tools for web security and ethical hacking.</p>
+                  <h3 className="font-semibold text-lg sm:text-xl">Server & Hardware</h3>
+                  <p className="text-sm text-gray-300">Microsoft Server, Active Directory, hardware assembly, diagnostics & virtualization.</p>
                 </div>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full">
-                <a href="https://tryhackme.com" target="_blank" rel="noopener noreferrer" aria-label="TryHackMe" className="flex-1 min-w-0">
-                  <MotionButton className="w-full px-4 py-2.5 min-h-[44px] bg-[var(--primary)] text-black rounded-md flex items-center justify-center gap-2 text-sm font-medium shadow-sm hover:shadow-md touch-target" title="TryHackMe">
-                    <span>TryHackMe</span>
-                  </MotionButton>
-                </a>
-
-                <a href="https://www.hackthebox.com" target="_blank" rel="noopener noreferrer" aria-label="Hack The Box" className="flex-1 min-w-0">
-                  <MotionButton className="w-full px-4 py-2.5 min-h-[44px] bg-[var(--primary)] text-black rounded-md flex items-center justify-center gap-2 text-sm font-medium shadow-sm hover:shadow-md touch-target" title="Hack The Box">
-                    <span>Hack The Box</span>
-                  </MotionButton>
-                </a>
+              <div className="grid grid-cols-1 gap-3">
+                {SERVER_HARDWARE_SKILLS.map((sh) => (
+                  <div key={sh.label}>
+                    <div className="flex items-center justify-between mb-1">
+                      <div className="font-medium text-xs sm:text-sm">{sh.label}</div>
+                      <div className="text-xs text-muted">{sh.value}%</div>
+                    </div>
+                    <div className="w-full bg-theme h-2 rounded-full overflow-hidden mb-1">
+                      <m.div
+                        className="h-full"
+                        initial={{ width: '0%' }}
+                        whileInView={{ width: `${sh.value}%` }}
+                        viewport={{ once: true, amount: 0.6 }}
+                        transition={{ duration: 0.9, ease: 'easeOut' }}
+                        style={{ width: `${sh.value}%`, background: 'linear-gradient(90deg,#06b6d4,#3b82f6)' }}
+                      />
+                    </div>
+                    <p className="text-xs text-muted">{sh.description || ''}</p>
+                  </div>
+                ))}
               </div>
             </div>
+          </m.div>
 
-            <div className="grid grid-cols-1 gap-3">
+          {/* Cybersecurity Card */}
+          <m.div variants={{ hidden: { opacity: 0, y: 8 }, show: { opacity: 1, y: 0 } }} whileHover={{ scale: 1.02 }} className="p-4 sm:p-6 rounded-2xl glass-theme border-theme shadow-theme min-w-0 flex flex-col justify-between">
+            <div>
+              <div className="flex flex-col gap-4 mb-4">
+                <div className="flex items-start gap-3 min-w-0">
+                  <div className="p-3 rounded-md bg-theme text-[var(--primary)] border-theme shrink-0"><FaShieldAlt size={20} /></div>
+                  <div className="min-w-0">
+                    <h3 className="font-semibold text-lg sm:text-xl">Cybersecurity</h3>
+                    <p className="text-sm text-gray-300">Hands-on learning and practical tools for web security and ethical hacking.</p>
+                  </div>
+                </div>
+
+                <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full">
+                  <a href="https://tryhackme.com" target="_blank" rel="noopener noreferrer" aria-label="TryHackMe" className="flex-1 min-w-0">
+                    <MotionButton className="w-full px-4 py-2.5 min-h-[44px] bg-[var(--primary)] text-black rounded-md flex items-center justify-center gap-2 text-sm font-medium shadow-sm hover:shadow-md touch-target" title="TryHackMe">
+                      <span>TryHackMe</span>
+                    </MotionButton>
+                  </a>
+
+                  <a href="https://www.hackthebox.com" target="_blank" rel="noopener noreferrer" aria-label="Hack The Box" className="flex-1 min-w-0">
+                    <MotionButton className="w-full px-4 py-2.5 min-h-[44px] bg-[var(--primary)] text-black rounded-md flex items-center justify-center gap-2 text-sm font-medium shadow-sm hover:shadow-md touch-target" title="Hack The Box">
+                      <span>Hack The Box</span>
+                    </MotionButton>
+                  </a>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 gap-3">
                 {CYBERSECURITY_SKILLS.map((c) => (
                   <div key={c.label}>
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="font-medium">{c.label}</div>
+                    <div className="flex items-center justify-between mb-1">
+                      <div className="font-medium text-xs sm:text-sm">{c.label}</div>
                       <div className="text-xs text-muted">{c.value}%</div>
                     </div>
-                    <div className="w-full bg-theme h-2 rounded-full overflow-hidden mb-2">
+                    <div className="w-full bg-theme h-2 rounded-full overflow-hidden mb-1">
                       <m.div
                         className="h-full"
                         initial={{ width: '0%' }}
@@ -165,58 +165,73 @@ export default function Skills() {
                     <p className="text-xs text-muted">{c.description || ''}</p>
                   </div>
                 ))}
+              </div>
             </div>
           </m.div>
 
-          <m.div variants={{ hidden: { opacity: 0, y: 8 }, show: { opacity: 1, y: 0 } }} whileHover={{ scale: 1.02 }} className="p-5 rounded-2xl glass-theme border-theme shadow-theme">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="p-2 rounded-md bg-theme text-[var(--primary)] border-theme"><FaCode size={18} /></div>
-              <h3 className="font-semibold text-lg">Technical</h3>
-            </div>
-            <div className="space-y-3">
-              {TECHNICAL_SKILLS.map((t) => (
-                <SkillBar key={t.label} label={t.label} value={t.value} />
-              ))}
+          {/* Technical Development Card */}
+          <m.div variants={{ hidden: { opacity: 0, y: 8 }, show: { opacity: 1, y: 0 } }} whileHover={{ scale: 1.02 }} className="p-5 rounded-2xl glass-theme border-theme shadow-theme min-w-0 flex flex-col justify-between">
+            <div>
+              <div className="flex items-center gap-3 mb-3">
+                <div className="p-2 rounded-md bg-theme text-[var(--primary)] border-theme"><FaCode size={18} /></div>
+                <div>
+                  <h3 className="font-semibold text-lg">Technical</h3>
+                  <p className="text-xs text-gray-300">Web frameworks, development languages & databases.</p>
+                </div>
+              </div>
+              <div className="space-y-3">
+                {TECHNICAL_SKILLS.map((t) => (
+                  <SkillBar key={t.label} label={t.label} value={t.value} />
+                ))}
+              </div>
             </div>
           </m.div>
         </m.div>
 
-        <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3 mb-4">
-          <MotionButton onClick={() => { setShowAll((s) => !s); setModalOpen((m) => !m) }} className="px-4 py-2.5 min-h-[44px] bg-[var(--primary)] text-black rounded-md touch-target">{showAll ? 'Hide Full List' : 'Show Full Resume List'}</MotionButton>
-          <MotionButton onClick={() => copyText('plain')} className="px-4 py-2.5 min-h-[44px] bg-theme text-theme border-theme rounded-md touch-target">{copied ? 'Copied' : 'Copy Full Resume'}</MotionButton>
+        <div className="flex items-center gap-3 mb-4">
+          <MotionButton onClick={() => setModalOpen(true)} className="px-5 py-2.5 min-h-[44px] bg-[var(--primary)] text-black font-semibold rounded-lg shadow-sm hover:shadow-md touch-target flex items-center gap-2">
+            <FaLayerGroup size={16} />
+            <span>Explore Complete Skill Matrix</span>
+          </MotionButton>
         </div>
 
         {modalOpen && (
-          <m.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:px-4 sm:py-6">
-            <button type="button" aria-label="Close skills modal" className="absolute inset-0 bg-gradient-to-br from-black/60 via-transparent to-black/70 backdrop-blur-sm" onClick={() => { setModalOpen(false); setShowAll(false) }} />
-            <m.div initial={{ y: 16, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.18 }} className="relative max-w-3xl w-full max-h-[92dvh] sm:max-h-[85dvh] mx-auto p-4 sm:p-6 rounded-t-2xl sm:rounded-xl glass-theme ring-1 border-theme shadow-2xl overflow-hidden flex flex-col" role="dialog" aria-modal="true" aria-labelledby="skills-modal-title">
-              <button type="button" aria-label="Close" onClick={() => { setModalOpen(false); setShowAll(false) }} className="absolute right-3 top-3 text-gray-300 hover:text-white p-2 rounded-md touch-target z-10"><HiOutlineX size={20} /></button>
+          <m.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6">
+            <button type="button" aria-label="Close skills modal" className="absolute inset-0 bg-black/75 backdrop-blur-md" onClick={() => setModalOpen(false)} />
+            <m.div initial={{ y: 20, opacity: 0, scale: 0.96 }} animate={{ y: 0, opacity: 1, scale: 1 }} transition={{ duration: 0.2 }} className="relative max-w-4xl w-full max-h-[88vh] mx-auto p-5 sm:p-7 rounded-2xl glass-theme border-theme shadow-2xl overflow-hidden flex flex-col z-10" role="dialog" aria-modal="true" aria-labelledby="skills-modal-title">
+              <button type="button" aria-label="Close" onClick={() => setModalOpen(false)} className="absolute right-4 top-4 text-gray-400 hover:text-white p-2 rounded-lg bg-theme border-theme touch-target z-20 transition">
+                <HiOutlineX size={20} />
+              </button>
 
-              <div className="flex flex-col gap-4 mb-3 pr-10 shrink-0">
-                <div className="min-w-0">
-                  <h3 id="skills-modal-title" className="text-lg sm:text-xl font-semibold">Full Resume — Skills & Details</h3>
-                  <p className="text-sm text-gray-400">Organized sections for quick copying into a resume or application.</p>
-                </div>
-
-                <div className="flex flex-wrap items-center gap-2">
-                  <MotionButton onClick={() => copyText('plain')} className="px-3 py-2 min-h-[44px] text-sm bg-[var(--primary)] text-black rounded-md touch-target">{copied ? 'Copied' : 'Copy'}</MotionButton>
-                  <MotionButton onClick={() => copyText('md')} className="px-3 py-2 min-h-[44px] text-sm bg-theme border-theme rounded-md touch-target">Copy MD</MotionButton>
-                  <MotionButton onClick={downloadStructuredText} className="px-3 py-2 min-h-[44px] text-sm bg-theme border-theme rounded-md touch-target">Download</MotionButton>
-                </div>
+              <div className="pb-4 mb-4 border-b border-white/10 shrink-0 pr-10">
+                <h3 id="skills-modal-title" className="text-xl sm:text-2xl font-bold text-white flex items-center gap-2.5">
+                  <FaLayerGroup className="text-[var(--primary)] shrink-0" size={20} />
+                  <span>Technical & Systems Competencies Matrix</span>
+                </h3>
+                <p className="text-xs sm:text-sm text-gray-300 mt-1">
+                  Comprehensive inventory of software development, server administration, hardware diagnostics & security capabilities.
+                </p>
               </div>
 
-              <div className="mt-2 flex-1 overflow-auto text-sm text-theme min-h-0">
+              <div className="flex-1 overflow-y-auto pr-1 text-sm text-theme min-h-0 space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {parseStructured(STRUCTURED).map((sec) => (
-                    <div key={sec.title} className="p-3 rounded-lg bg-theme border-theme">
-                      <div className="flex items-center justify-between">
-                        <h4 className="text-sm font-medium text-gray-200">{sec.title}</h4>
-                        <span className="text-xs text-gray-400">{sec.items.length} items</span>
-                      </div>
-                      <div className="mt-3 flex flex-wrap gap-2">
-                        {sec.items.map((it) => (
-                          <span key={`${sec.title}-${it}`} className="inline-flex items-center px-2 py-0.5 bg-theme rounded-full text-xs text-muted">{it}</span>
-                        ))}
+                    <div key={sec.title} className="p-4 rounded-xl glass-theme border-theme flex flex-col justify-between">
+                      <div>
+                        <div className="flex items-center justify-between pb-2 mb-3 border-b border-white/10">
+                          <h4 className="text-sm sm:text-base font-semibold text-white">{sec.title}</h4>
+                          <span className="text-xs px-2 py-0.5 rounded-full bg-theme text-indigo-300 border-theme font-medium shrink-0">
+                            {sec.items.length} items
+                          </span>
+                        </div>
+                        <ul className="space-y-2 mt-1">
+                          {sec.items.map((it) => (
+                            <li key={`${sec.title}-${it}`} className="flex items-start gap-2.5 text-xs sm:text-sm text-gray-300 leading-snug">
+                              <span className="w-1.5 h-1.5 rounded-full bg-[var(--primary)] shrink-0 mt-1.5" />
+                              <span>{it}</span>
+                            </li>
+                          ))}
+                        </ul>
                       </div>
                     </div>
                   ))}
@@ -229,3 +244,4 @@ export default function Skills() {
     </m.section>
   )
 }
+

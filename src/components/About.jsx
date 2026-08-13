@@ -5,7 +5,7 @@ import { m } from 'framer-motion'
 const stats = [
   { label: 'Projects', value: 10, suffix: '+' },
   { label: 'Certificates', value: 10, suffix: '+' },
-  { label: 'Skills', value: 11, suffix: '+' },
+  { label: 'Skills', value: 20, suffix: '+' },
   { label: 'Experience', value: 1.5, suffix: '+ yrs', live: true, precision: 1 },
 ]
 
@@ -17,15 +17,15 @@ function getExperienceValue(referenceDate = new Date()) {
   const monthsElapsed = Math.max(
     0,
     (referenceDate.getFullYear() - EXPERIENCE_START_DATE.getFullYear()) * 12
-      + (referenceDate.getMonth() - EXPERIENCE_START_DATE.getMonth())
-      + (referenceDate.getDate() >= EXPERIENCE_START_DATE.getDate() ? 0 : -1),
+    + (referenceDate.getMonth() - EXPERIENCE_START_DATE.getMonth())
+    + (referenceDate.getDate() >= EXPERIENCE_START_DATE.getDate() ? 0 : -1),
   )
 
   const steps = Math.floor(monthsElapsed / EXPERIENCE_STEP_MONTHS)
   return Math.min(1.5, EXPERIENCE_STEP_VALUE + (steps * EXPERIENCE_STEP_VALUE))
 }
 
-const githubLanguages = ['JavaScript', 'Python', 'PHP', 'HTML', 'Batchfile', 'CSS']
+const githubLanguages = ['JavaScript', 'Python', 'PHP', 'HTML', 'Batchfile', 'CSS', 'PowerShell']
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -99,10 +99,10 @@ export default function About() {
             <p className="text-xs uppercase tracking-[0.3em] text-indigo-400 mb-3">Profile</p>
             <h3 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">About Heer Patel</h3>
             <p className="text-sm sm:text-base leading-relaxed mb-4">
-              I’m Heer Patel, an MCA student (having completed my BCA) focused on cybersecurity and modern web development. I build small projects, learn from real examples, and keep improving by working through practical problems.
+              I'm Heer Patel, an MCA student (having completed BCA) focused on IT systems administration, Microsoft Server management, computer hardware, cybersecurity, and modern web development.
             </p>
             <p className="text-sm sm:text-base leading-relaxed">
-              My GitHub projects show a mixed stack: JavaScript, Python, PHP, HTML, CSS, and Batchfile. I like creating websites that are safe, simple, and easy to use.
+              My technical foundation spans Microsoft Windows Server administration, computer hardware assembly & diagnostics, Active Directory, React, JavaScript, Python, PHP, and security testing tools.
             </p>
 
             <div className="mt-5 flex flex-wrap gap-2">
@@ -118,15 +118,15 @@ export default function About() {
           <m.div variants={itemVariants} className="md:col-span-6 space-y-3">
             <div className="p-4 sm:p-5 rounded-xl border-theme hover-theme bg-theme text-theme transition">
               <p className="text-xs sm:text-sm uppercase tracking-widest text-indigo-400 font-semibold mb-2">What I Know</p>
-              <p className="text-sm sm:text-base">Basic web building (HTML, CSS, JavaScript), React, Python, PHP, and security tools used for learning and testing.</p>
+              <p className="text-sm sm:text-base">Microsoft Server, Active Directory, Hardware assembly & diagnostics, Web development (React, JS, HTML/CSS), Python, PHP, and cybersecurity testing tools.</p>
             </div>
             <div className="p-4 sm:p-5 rounded-xl border-theme hover-theme bg-theme text-theme transition">
               <p className="text-xs sm:text-sm uppercase tracking-widest text-violet-400 font-semibold mb-2">What I Care About</p>
-              <p className="text-sm sm:text-base">Making websites safe, fast, and easy for people to use.</p>
+              <p className="text-sm sm:text-base">Building reliable server infrastructure, maintaining secure computer systems, and creating fast, intuitive web applications.</p>
             </div>
             <div className="p-4 sm:p-5 rounded-xl border-theme hover-theme bg-theme text-theme transition">
               <p className="text-xs sm:text-sm uppercase tracking-widest text-cyan-400 font-semibold mb-2">How I Work</p>
-              <p className="text-sm sm:text-base">I learn quickly, try things myself, and fix problems step by step.</p>
+              <p className="text-sm sm:text-base">I diagnose problems methodically, learn fast, and build hands-on solutions step by step.</p>
             </div>
           </m.div>
         </m.div>
